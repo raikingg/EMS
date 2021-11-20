@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mysql-standalone:
+    image: 'mysql:8'
+    networks:
+      - employee-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=welcome@123
+      - MYSQL_USER=newuser
+      - MYSQL_PASSWORD=123
+      - MYSQL_DATABASE=employee_management_system
+  springboot-docker-container:
+    image: springboot-docker-container
+    networks:
+      - employee-mysql
+    ports:
+      - "8080:8080"
+    build:
+      context: "./"
+      dockerfile: "Dockerfile"
+    depends_on:
+      - mysql-standalone
+
+networks:
+  employee-mysql:
